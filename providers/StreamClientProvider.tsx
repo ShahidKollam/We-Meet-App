@@ -1,3 +1,5 @@
+'use client'
+
 import { tokenProvider } from '@/actions/stream.actions';
 import Loader from '@/components/Loader';
 import { useUser } from '@clerk/nextjs';
@@ -36,12 +38,12 @@ const StreamVideoProvider = ({ children }: {
         setVideoClient(client)
     }, [user, isLoaded])
 
-    if (!videoClient) return <Loader />
+    if (!videoClient) return <Loader />;
 
 
     return (
         <StreamVideo client={videoClient}>
-
+            {children}
         </StreamVideo>
     );
 };
