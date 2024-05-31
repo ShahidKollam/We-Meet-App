@@ -1,3 +1,4 @@
+'use client'
 import Loader from '@/components/Loader'
 import MeetingRoom from '@/components/MeetingRoom'
 import MeetingSetup from '@/components/MeetingSetup'
@@ -18,7 +19,7 @@ const Meeting = ({ params: { id } }: { params: { id: string } }) => {
       <StreamCall call={call}>
         <StreamTheme>
           {!isSetupComplete ? (
-            <MeetingSetup />
+            <MeetingSetup setIsSetupComplete={setIsSetupComplete} />
           ) : (
             <MeetingRoom />
           )}
