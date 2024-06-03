@@ -1,7 +1,15 @@
 import StreamVideoProvider from '@/providers/StreamClientProvider'
+import { Metadata } from 'next';
 import React, { ReactNode } from 'react'
 
-const RootLayout = ({ children }: { children: ReactNode }) => {
+
+export const metadata: Metadata = {
+  title: "We MeeT",
+  description: "Video conference app",
+  icons: '/icons/logo.svg'
+};
+
+const RootLayout = ({ children }: Readonly<{ children: ReactNode }>) => {
   return (
     <main>
       <StreamVideoProvider>
