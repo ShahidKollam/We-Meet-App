@@ -101,7 +101,7 @@ const MeetingTypeList = () => {
                 <MeetingModal
                     isOpen={meetingState === 'isScheduleMeeting'}
                     onClose={() => setMeetingState(undefined)}
-                    title="Create Meeting 2"
+                    title="Create Meeting"
                     handleClick={createMeeting}
                 >
                     <div className="flex flex-col gap-2.5">
@@ -135,9 +135,9 @@ const MeetingTypeList = () => {
                 <MeetingModal
                     isOpen={meetingState === 'isScheduleMeeting'}
                     onClose={() => setMeetingState(undefined)}
-                    title="Meeting Created 3"
+                    title="Meeting Created"
                     handleClick={() => {
-                        navigator.clipboard.writeText(meetingLink)                        
+                        navigator.clipboard.writeText(meetingLink)
                         toast({ title: 'Link Copied' })
                     }}
                     image={'/icons/checked.svg'}
@@ -150,7 +150,7 @@ const MeetingTypeList = () => {
             <MeetingModal
                 isOpen={meetingState === 'isInstantMeeting'}
                 onClose={() => setMeetingState(undefined)}
-                title="Create Meeting 1"
+                title="Create Meeting"
                 className='text-center'
                 buttonText='Start Meeting'
                 handleClick={createMeeting}
