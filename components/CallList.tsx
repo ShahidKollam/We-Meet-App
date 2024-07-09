@@ -3,17 +3,18 @@
 
 import { useGetCalls } from '@/hooks/useGetCalls'
 import { Call, CallRecording } from '@stream-io/video-react-sdk'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import MeetingCard from './MeetingCard'
 import { useRouter } from 'next/navigation'
 import Loader from './Loader'
+import { toast } from './ui/use-toast'
 
 const CallList = ({ type }: { type: 'ended' | 'upcoming' | 'recordings' }) => {
 
     const { endedCalls, upcomingCalls, callRecordings, isLoading } = useGetCalls()
     const router = useRouter()
     const [recordings, setRecordings] = useState<CallRecording[]>([])
-    
+
     const getCalls = () => {
         switch (type) {
             case 'ended':
@@ -39,6 +40,29 @@ const CallList = ({ type }: { type: 'ended' | 'upcoming' | 'recordings' }) => {
                 return ''
         }
     }
+
+    useEffect(() => {
+        const fetchRecordings = async () => {
+            try {
+                const callData = await Promise.all(callRecordings.map((meeting) =>
+                    meeting.queryRecordings()
+                ))
+    
+                const recordings = callData.filter(call => call.recordings.length > 0)
+                    .flatMap(call => call.recordings)
+    
+                    setRecordings(recordings)
+        
+            
+    
+            } catch (error) {
+                toast({title: "Try again later"})
+            }
+        }
+
+        if (type === 'recordings') fetchRecordings()
+    }, [type, callRecordings])
+
     const calls = getCalls()
     const noCallsMessage = getNoCallsMessage()
 
@@ -54,8 +78,8 @@ const CallList = ({ type }: { type: 'ended' | 'upcoming' | 'recordings' }) => {
                             : type === 'upcoming' ? '/icons/upcoming.svg'
                                 : '/icons/recordings.svg'
                     }
-                    title={(meeting as Call).state.custom.description.substring(0, 26) || 'No Description'}
-                    date={meeting.state.startsAt.toLocaleString() || meeting.starts_time.toLocaleString()}
+                    title={(meeting as Call).state?.custom.description.substring(0, 26) || meeting.filename.substring(0, 20) || 'No Description'}
+                    date={meeting.state?.startsAt.toLocaleString() || meeting.starts_time.toLocaleString()}
                     isPreviousMeeting={type === 'ended'}
                     buttonIcon1={type === 'recordings' ? '/icons/play.svg' : undefined}
                     buttonText={type === 'recordings' ? 'Play' : 'Start'}
